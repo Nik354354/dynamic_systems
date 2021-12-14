@@ -34,7 +34,7 @@ class Theory:
         nu = 2 * atan2(((1 + e) / (1 - e)) ** 0.5 * sin(E / 2), cos(E / 2))
         return (1 - e ** 2) / (1 + e * cos(nu))
 
-    def f_out(self, t, y): 
+    def f_out(self, t, y):  # обработчик шага
         self.ts.append(t)
         self.ys.append(list(y.copy()))
         y1, y2 = y
@@ -48,11 +48,11 @@ class Theory:
         ODE.set_solout(self.f_out)
         fig, ax = plt.subplots()
         fig.set_facecolor('white')
-        for y_0 in self.Y_0: 
-            self.ts, self.ys = [], [] 
-            ODE.set_initial_value(y_0, self.t_0) 
-            ODE.set_f_params(self.e)  
-            ODE.integrate(self.t_max)  
+        for y_0 in self.Y_0:  # перебор значений начальных параметров
+            self.ts, self.ys = [], []
+            ODE.set_initial_value(y_0, self.t_0)  # задание начальных значений
+            ODE.set_f_params(self.e)  # передача дополнительного аргумента e в функцию f(t,y,e)
+            ODE.integrate(self.t_max)  # решение ОДУ
             Y = np.array(self.ys)
             T = np.array(self.ts)
 
@@ -72,6 +72,7 @@ class Theory:
             plt.legend(loc='best')
 
         plt.show()
+
 
 
 

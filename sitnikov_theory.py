@@ -18,7 +18,6 @@ class Theory:
             self.Y_0.append([self.z_0, self.v_0 + i / 100])
 
     def bin_search(self, f, a, b):
-		 '''Basic binary search for the function f's root between a and b'''
         m = (a + b) / 2
         if b - a < 10 ** (-7):
             return m
@@ -30,13 +29,12 @@ class Theory:
             return m
 
     def rho(self, t, e):
-		 '''searching E using previous algorithm'''
         f = lambda x, t, e: x - e * sin(x) - t
         E = self.bin_search(lambda x: f(x, t, e), t - e, t + e)
         nu = 2 * atan2(((1 + e) / (1 - e)) ** 0.5 * sin(E / 2), cos(E / 2))
         return (1 - e ** 2) / (1 + e * cos(nu))
 
-    def f_out(self, t, y):  # step handler
+    def f_out(self, t, y): 
         self.ts.append(t)
         self.ys.append(list(y.copy()))
         y1, y2 = y
@@ -47,18 +45,18 @@ class Theory:
         f = lambda t, y, e: [y[1], -y[0] / (self.rho(t, e) ** 2 + y[0] ** 2) ** 1.5]
         ODE = ode(f)
         ODE.set_integrator('dopri5', max_step=0.01, nsteps=10000)
-        ODE.set_solout(self.f_out) #adds values for plotting
+        ODE.set_solout(self.f_out)
         fig, ax = plt.subplots()
         fig.set_facecolor('white')
-        for y_0 in self.Y_0:   #iteration over initial parameter values
-            self.ts, self.ys = [], [] #zeroing arrays
-            ODE.set_initial_value(y_0, self.t_0)  #setting initial values
-            ODE.set_f_params(self.e)  #passing an extra argument e to a function f(t,y,e)
-            ODE.integrate(self.t_max)  #solutioning of ODE
+        for y_0 in self.Y_0: 
+            self.ts, self.ys = [], [] 
+            ODE.set_initial_value(y_0, self.t_0) 
+            ODE.set_f_params(self.e)  
+            ODE.integrate(self.t_max)  
             Y = np.array(self.ys)
             T = np.array(self.ts)
 
-            plt.subplot(2, 1, 1) #plotting
+            plt.subplot(2, 1, 1)
             plt.plot(Y[:, 0], Y[:, 1], linewidth=1, label='z_0=%.2f' % y_0[0])
             plt.xlabel('z')
             plt.ylabel('v_z')

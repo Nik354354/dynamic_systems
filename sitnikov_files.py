@@ -1,8 +1,6 @@
 import json
 import tkinter as tk
 
-import my as my
-
 
 def fetch_xyz_data():
 	return x1_seq, y1_seq, x2_seq, y2_seq, z_seq

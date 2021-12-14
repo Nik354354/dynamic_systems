@@ -5,7 +5,7 @@ from math import sin, cos, atan2
 
 
 class Theory:
-    def __init__(self, z_0, v_0, t_0, e):
+    def __init__(self, z_0, v_0, t_0, e): #setting initial values
         self.z_0 = z_0
         self.v_0 = v_0
         self.t_0 = t_0
@@ -46,19 +46,19 @@ class Theory:
     def plot_theory(self):
         f = lambda t, y, e: [y[1], -y[0] / (self.rho(t, e) ** 2 + y[0] ** 2) ** 1.5]
         ODE = ode(f)
-        ODE.set_integrator('dopri5', max_step=0.01, nsteps=10000)
-        ODE.set_solout(self.f_out)
+        ODE.set_integrator('dopri5', max_step=0.01, nsteps=10000) 
+        ODE.set_solout(self.f_out) #adds values for plotting
         fig, ax = plt.subplots()
         fig.set_facecolor('white')
         for y_0 in self.Y_0:  #iteration over initial parameter values
-            self.ts, self.ys = [], []
+            self.ts, self.ys = [], [] #zeroing arrays
             ODE.set_initial_value(y_0, self.t_0)  #setting initial values
             ODE.set_f_params(self.e)  #passing an extra argument e to a function f(t,y,e)
-            ODE.integrate(self.t_max)  # решение ОДУ
+            ODE.integrate(self.t_max)  #solutioning of ODE
             Y = np.array(self.ys)
             T = np.array(self.ts)
 
-            plt.subplot(2, 1, 1)
+            plt.subplot(2, 1, 1) #plotting
             plt.plot(Y[:, 0], Y[:, 1], linewidth=1, label='z_0=%.2f' % y_0[0])
             plt.xlabel('z')
             plt.ylabel('v_z')

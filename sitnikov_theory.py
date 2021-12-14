@@ -18,6 +18,7 @@ class Theory:
             self.Y_0.append([z_0, v_0 + i / 100])
 
     def bin_search(self, f, a, b):
+        '''Basic binary search for the function f's root between a and b'''
         m = (a + b) / 2
         if b - a < 10 ** (-7):
             return m
@@ -29,12 +30,13 @@ class Theory:
             return m
 
     def rho(self, t, e):
+        '''searching E using previous algorithm'''
         f = lambda x, t, e: x - e * sin(x) - t
         E = self.bin_search(lambda x: f(x, t, e), t - e, t + e)
         nu = 2 * atan2(((1 + e) / (1 - e)) ** 0.5 * sin(E / 2), cos(E / 2))
         return (1 - e ** 2) / (1 + e * cos(nu))
 
-    def f_out(self, t, y):  # обработчик шага
+    def f_out(self, t, y):  #step handler
         self.ts.append(t)
         self.ys.append(list(y.copy()))
         y1, y2 = y
@@ -48,10 +50,10 @@ class Theory:
         ODE.set_solout(self.f_out)
         fig, ax = plt.subplots()
         fig.set_facecolor('white')
-        for y_0 in self.Y_0:  # перебор значений начальных параметров
+        for y_0 in self.Y_0:  #iteration over initial parameter values
             self.ts, self.ys = [], []
-            ODE.set_initial_value(y_0, self.t_0)  # задание начальных значений
-            ODE.set_f_params(self.e)  # передача дополнительного аргумента e в функцию f(t,y,e)
+            ODE.set_initial_value(y_0, self.t_0)  #setting initial values
+            ODE.set_f_params(self.e)  #passing an extra argument e to a function f(t,y,e)
             ODE.integrate(self.t_max)  # решение ОДУ
             Y = np.array(self.ys)
             T = np.array(self.ts)

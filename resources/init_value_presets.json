@@ -1,0 +1,5 @@
+{
+	"z0": 0,
+	"v0": 0.5,
+	"t0": 0.5 // in multiples of pi - this value will pe multiplied by pi
+}

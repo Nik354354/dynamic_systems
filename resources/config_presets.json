@@ -1,0 +1,10 @@
+{
+    "color1" : "255 249 23",
+    "color2": "255 249 23",
+    "color3": "0 140 240",
+    "trail_len": 300,
+    "points_between": 30,
+    "scale": 200,
+    "scale_time": 0.5,
+    "num_stars": 1000
+}
